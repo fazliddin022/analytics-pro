@@ -2,10 +2,12 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-// Client side uchun (brauzerda)
+// Client side uchun (brauzerda) — bu yetarli
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Server side uchun (RLS bypass qiladi)
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+// Server side uchun — faqat server componentlarda ishlatiladi
+export function getSupabaseAdmin() {
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  return createClient(supabaseUrl, serviceKey);
+}
