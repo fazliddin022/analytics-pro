@@ -2,13 +2,30 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { createTask, getTasks, updateTaskStatus, deleteTask } from "@/lib/tasks";
+import {
+  createTask,
+  getTasks,
+  updateTaskStatus,
+  deleteTask,
+} from "@/lib/tasks";
 import { Task } from "@/types";
-import { Plus, Trash2, Circle, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  Circle,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 
 const STATUS_CONFIG = {
   todo: { label: "To Do", color: "#6b7280", bg: "#f3f4f6", icon: Circle },
-  in_progress: { label: "In Progress", color: "#d97706", bg: "#fffbeb", icon: Clock },
+  in_progress: {
+    label: "In Progress",
+    color: "#d97706",
+    bg: "#fffbeb",
+    icon: Clock,
+  },
   done: { label: "Done", color: "#059669", bg: "#ecfdf5", icon: CheckCircle2 },
 };
 
@@ -52,7 +69,7 @@ export default function TasksPage() {
 
   const handleStatusChange = async (taskId: string, status: Task["status"]) => {
     await updateTaskStatus(taskId, status);
-    setTasks(tasks.map((t) => t.id === taskId ? { ...t, status } : t));
+    setTasks(tasks.map((t) => (t.id === taskId ? { ...t, status } : t)));
   };
 
   const handleDelete = async (taskId: string) => {
@@ -60,7 +77,8 @@ export default function TasksPage() {
     setTasks(tasks.filter((t) => t.id !== taskId));
   };
 
-  const filtered = filter === "all" ? tasks : tasks.filter((t) => t.status === filter);
+  const filtered =
+    filter === "all" ? tasks : tasks.filter((t) => t.status === filter);
 
   const counts = {
     all: tasks.length,
@@ -71,7 +89,9 @@ export default function TasksPage() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: "center", paddingTop: "4rem", color: "#9ca3af" }}>
+      <div
+        style={{ textAlign: "center", paddingTop: "4rem", color: "#9ca3af" }}
+      >
         Loading tasks...
       </div>
     );
@@ -79,27 +99,34 @@ export default function TasksPage() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-
       {/* Header */}
       <div>
         <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#111827" }}>
           Tasks
         </h1>
-        <p style={{ color: "#6b7280", fontSize: "0.875rem", marginTop: "0.25rem" }}>
+        <p
+          style={{
+            color: "#6b7280",
+            fontSize: "0.875rem",
+            marginTop: "0.25rem",
+          }}
+        >
           Manage your tasks and track progress.
         </p>
       </div>
 
       {/* Add task */}
-      <div style={{
-        background: "white",
-        borderRadius: "1rem",
-        padding: "1.25rem",
-        border: "1px solid #e5e7eb",
-        display: "flex",
-        gap: "0.75rem",
-        flexWrap: "wrap",
-      }}>
+      <div
+        style={{
+          background: "white",
+          borderRadius: "1rem",
+          padding: "1.25rem",
+          border: "1px solid #e5e7eb",
+          display: "flex",
+          gap: "0.75rem",
+          flexWrap: "wrap",
+        }}
+      >
         <input
           placeholder="Add a new task..."
           value={newTitle}
@@ -181,14 +208,16 @@ export default function TasksPage() {
       {/* Tasks list */}
       <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
         {filtered.length === 0 ? (
-          <div style={{
-            textAlign: "center",
-            padding: "3rem",
-            background: "white",
-            borderRadius: "1rem",
-            border: "1px solid #e5e7eb",
-            color: "#9ca3af",
-          }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "3rem",
+              background: "white",
+              borderRadius: "1rem",
+              border: "1px solid #e5e7eb",
+              color: "#9ca3af",
+            }}
+          >
             <AlertCircle size={32} style={{ margin: "0 auto 0.75rem" }} />
             <p>No tasks found. Add one above!</p>
           </div>
@@ -199,30 +228,46 @@ export default function TasksPage() {
             const StatusIcon = statusCfg.icon;
 
             return (
-              <div key={task.id} style={{
-                background: "white",
-                borderRadius: "1rem",
-                padding: "1rem 1.25rem",
-                border: "1px solid #e5e7eb",
-                display: "flex",
-                alignItems: "center",
-                gap: "1rem",
-                transition: "all 0.2s",
-              }}>
+              <div
+                key={task.id}
+                style={{
+                  background: "white",
+                  borderRadius: "1rem",
+                  padding: "1rem 1.25rem",
+                  border: "1px solid #e5e7eb",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  transition: "all 0.2s",
+                }}
+              >
                 {/* Status icon */}
-                <StatusIcon size={20} color={statusCfg.color} style={{ flexShrink: 0 }} />
+                <StatusIcon
+                  size={20}
+                  color={statusCfg.color}
+                  style={{ flexShrink: 0 }}
+                />
 
                 {/* Title */}
                 <div style={{ flex: 1 }}>
-                  <p style={{
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                    color: task.status === "done" ? "#9ca3af" : "#111827",
-                    textDecoration: task.status === "done" ? "line-through" : "none",
-                  }}>
+                  <p
+                    style={{
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      color: task.status === "done" ? "#9ca3af" : "#111827",
+                      textDecoration:
+                        task.status === "done" ? "line-through" : "none",
+                    }}
+                  >
                     {task.title}
                   </p>
-                  <p style={{ fontSize: "0.75rem", color: "#9ca3af", marginTop: "0.125rem" }}>
+                  <p
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "#9ca3af",
+                      marginTop: "0.125rem",
+                    }}
+                  >
                     {new Date(task.created_at).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -231,31 +276,37 @@ export default function TasksPage() {
                 </div>
 
                 {/* Priority badge */}
-                <span style={{
-                  fontSize: "0.7rem",
-                  fontWeight: 600,
-                  padding: "0.2rem 0.6rem",
-                  borderRadius: "999px",
-                  background: priorityCfg.bg,
-                  color: priorityCfg.color,
-                  flexShrink: 0,
-                }}>
+                <span
+                  style={{
+                    fontSize: "0.7rem",
+                    fontWeight: 600,
+                    padding: "0.2rem 0.6rem",
+                    borderRadius: "999px",
+                    background: priorityCfg.bg,
+                    color: priorityCfg.color,
+                    flexShrink: 0,
+                  }}
+                >
                   {priorityCfg.label}
                 </span>
 
                 {/* Status select */}
                 <select
                   value={task.status}
-                  onChange={(e) => handleStatusChange(task.id, e.target.value as Task["status"])}
+                  onChange={(e) =>
+                    handleStatusChange(
+                      task.id,
+                      e.target.value as Task["status"],
+                    )
+                  }
                   style={{
                     padding: "0.375rem 0.75rem",
-                    border: "1px solid",
-                    borderColor: statusCfg.color,
+                    border: "1px solid #e5e7eb",
                     borderRadius: "0.625rem",
                     fontSize: "0.75rem",
                     fontWeight: 500,
-                    background: statusCfg.bg,
-                    color: statusCfg.color,
+                    background: "white",
+                    color: "#374151",
                     cursor: "pointer",
                     outline: "none",
                     flexShrink: 0,
